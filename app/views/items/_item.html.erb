@@ -1,0 +1,103 @@
+<%= form_with(model: @item, local: true) do |form| %>
+  <% if @item.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@item.errors.count, "error") %> prohibited this company from being saved:</h2>
+
+      <ul>
+      <% @item.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :quantity %>
+    <%= form.text_field :quantity, :class => 'quantity-input' %>
+  </div>
+
+  <div class="field">
+    <%= form.label :description %>
+    <%= form.text_field :description, :class => 'description-input' %>
+  </div>
+
+
+  <div class="field">
+    <%= form.label :unit_cost %>
+    <%= form.text_field :unit_cost, :class => 'unit_cost-input'  %>
+  </div>
+
+
+  <div class="field">
+    <%= form.label :discount %>
+    <%= form.text_field :discount, :class => 'discount-input' %>
+  </div>
+
+  <div class="field">
+  	<span class="total-price">
+              <%#= number_to_currency item.total_price %>
+            </span>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
+
+
+
+
+
+
+
+  <script>
+    
+    $(function(){
+      function get_new_index() {
+        if ($('table#items_table tbody tr:last td:first input').length == 0) {
+          return 0;
+        }
+        else {
+          return parseInt($('table#items_table tbody tr:last td:first input').attr('name').match(/\d+/)[0]) + 1;
+        }
+      }
+    
+      $('#add_item').click(function(){
+        $('#item_template').tmpl({index: get_new_index()}).appendTo('table#items_table tbody');
+        return false;
+      });
+    
+      $('.delete_item').live('click', function(){
+        var context = $(this).parent().parent()
+        if ($('input[name*=_destroy]', context).length == 0) {
+          context.remove(); // If its a new item then simply remove it from the dom
+        }
+        else {
+          context.hide();
+          $('input[name*=_destroy]', context).val('true'); // This will tell the server to delete the record
+        }
+      });
+    
+      // Update totals
+    
+      function update_price(elem) {
+        var context = $(elem).parent().parent()[0].tagName == 'TD' ? $(elem).parent().parent().parent() : $(elem).parent().parent();
+        var quantity = $('.quantity-input', context).val();
+        var unit_cost = $('.unit_cost-input', context).val();
+        var discount = $('.discount-input', context).val();
+      
+        // Check they're numbers
+        quantity = isNaN(quantity) ? 0 : quantity;
+        unit_cost = isNaN(unit_cost) ? 0 : unit_cost;
+        discount = isNaN(discount) ? 0 : discount;
+      
+        // Update
+        $('.total-price', context).html('$ ' + (quantity * unit_cost * (1 - (discount / 100.0))));
+      }
+    
+      $('.quantity-input').live('keyup', function(){ update_price(this); });
+      $('.unit_cost-input').live('keyup', function(){ update_price(this); });
+      $('.discount-input').live('keyup', function(){ update_price(this); });
+    });
+
+  </script>

@@ -1,0 +1,100 @@
+<style type="text/css">
+  .bill{
+        width: 10%;
+    float: right;
+}
+  }
+</style>
+<br>
+<h1>
+  <%= t('.list_invoices') %>
+  <span class="right">
+    <%#= link_to t('Show Pending Bill'), :url=>{:controller=>"items", :action=>"bending_bill"} %>
+  </span>
+  <span class="right">
+    <%#= link_to t('Show Collected Bill'),:url=>{:controller=>"items", :action=>"bending_bill"}%>
+  </span>
+</h1>
+<br><br><br>
+<table>
+  <thead>
+    <tr>
+     <!--  <th>
+        <%#= t('.id') %>
+      </th> -->
+      <th>
+        <%= t('.invoice_date') %>
+      </th>
+      <th>
+        <%= t('.client_name') %>
+      </th>
+      <th>
+        <%= t('.status') %>
+      </th>
+      <th>
+        <%= t('.toal_amount') %>
+      </th>
+       <th>
+        <%= t('.collection') %>
+      </th>
+      </th>
+       <th>
+        <%= t('.balance_due') %>
+      </th>
+      <th>
+        <%= t('.actions') %>
+      </th>
+    </tr>
+  </thead>
+  <tfoot>
+    <tr>
+      <td colspan="6">
+        <%#= will_paginate @invoices %>
+      </td>
+    </tr>
+  </tfoot>
+  <tbody>
+    <% @items.each do |invoice| %>
+      <tr>
+        <td class="align-right">
+          <%#= invoice.id %>
+          <%#= l(invoice.created_at, :format => :short) %>
+          <%= link_to h(invoice.created_at.strftime("%B %d, %Y %H:%M")), invoice%>
+        </td>
+        <td>
+          <%= @client.name %>
+          <% p"MMMMMMMMMMMMMMMMMMMMMMMM"%>
+          <% p @client.name%>
+          <% p"MMMMMMMMMMMMMMMMMMMMMMMM"%>
+          <%# unless invoice.client.email.empty? %>
+          
+            <%#= mail_to invoice.client.email, 'Email' %>
+          <%# end %>
+        </td>
+        <td class="invoice-status invoice-status-<%= invoice.status %>">
+          <%= invoice.status %>
+        </td>
+        
+        <td class="align-right">
+          <%#= number_to_currency(invoice.total) %>
+          <%= number_to_currency(invoice.total_price) %>
+        </td>
+        
+        <td>
+        <%= number_to_currency(invoice.tax)%>
+        </td>
+
+        <td>
+        <%= number_to_currency(invoice.gross_amount)%>
+        </td>
+
+        <td>
+          <%#= link_to t('.show'), invoice %>
+          <%= link_to t('PDF Report'), item_path(invoice, :format => :pdf), :target => '_blank' %>
+          <%= link_to 'Collect Bill', edit_item_path(invoice)%>
+          <%#= link_to t('.destroy'), invoice, :confirm => t('.confirm_delete'), :method => :delete %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

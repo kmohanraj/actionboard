@@ -1,0 +1,87 @@
+<style type="text/css">
+  #name{
+    font-size: 21px;
+    display: block;
+  }
+</style>
+<br>
+<div class="grid_16">
+  <h1>
+    <%= t('.invoice') + " #" + @item.id.to_s %>
+  </h1>
+</div>
+<div class="grid_8">
+  <span id="name"><%= t('.client name') %></span>
+</br>
+  <%= @client.name %>
+</div>
+<br>
+<div class="grid_8">
+  <span id="name"><%= t('.client address') %></span>
+  <br>
+  <%= @client.address %>
+</div>
+<br>
+<div class="grid_8">
+  <span id="name"><%= t('.status') %></span>
+  </br>
+  <span class="invoice-status invoice-status-<%= @item.status %>">
+    <%= t('.' + @item.status)  %>
+  </span>
+</div>
+<%= render :partial => "shared/separator" %>
+<div class="grid_16">
+  <label>
+    <%= t('.items') %>
+  </label>
+  <table id="items_table">
+    <thead>
+      <tr>
+        <th>
+          <%= t('.invoice_date') %>
+        </th>
+        <th>
+          <%= t('.quantity') %>
+        </th>
+        <th>
+          <%= t('.desc')%>
+        </th>
+        <th>
+          <%= t('.amount') %>
+        </th>
+         <th>
+          <%= t('.collection') %>
+        </th>
+        </th>
+         <th>
+          <%= t('.balance_due') %>
+        </th>
+         <th>
+          <%= t('.discount') %>
+        </th>
+        <th>
+          <%= t('.total') %>
+        </th>
+      </tr>
+    </thead>
+    <tfoot>
+      <tr>
+        <td class="align-right invoice-total" colspan="8">
+          <strong>
+            <%= t('.total') %>
+            <%#= number_to_currency(@item.total) %>
+          </strong>
+        </td>
+      </tr>
+    </tfoot>
+    <tbody>
+      <%# @item.each do |item| %>
+        <%#= render :partial => "static_item", :locals => {:item => item} %>
+        <%= render 'static_item'%>
+      <%# end %>
+    </tbody>
+  </table>
+</div>
+<div class="grid_2">
+  <%#= link_to t('.send'), '#' if @item.status == 'pending' %>
+</div>

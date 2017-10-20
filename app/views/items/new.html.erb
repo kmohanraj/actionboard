@@ -1,0 +1,184 @@
+<!-- <style type="text/css">
+	#one{
+	width: 9.5%;
+    float: left;
+	}
+	#two{
+		width: 30%;
+    float: left;
+	}
+	#three{
+		width: 36%;
+    float: left;
+	}
+	#four{
+		    width: 11%;
+    float: left;
+	}
+	#five{
+		    width: 17%;
+    float: left;
+	}
+</style> -->
+<style type="text/css">
+  #ar{
+    width: 7%;
+    float: left;
+  }
+  #ar2{
+    width: 36%;
+    float: left;
+  }
+  #ar3{
+    width: 10%;
+    float: left;
+  }
+  #ar4{
+    width: 10%;
+    float: left;
+  }
+  #ar5{
+    width: 15%;
+    float: left;
+  }
+</style>
+<div class="grid_16">
+  <h1>
+    <%= t('.create_invoice') %>
+  </h1>
+</div>  
+<%= form_with(model: @item, local: true) do |form| %>
+  <% if @item.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@item.errors.count, "error") %> prohibited this company from being saved:</h2>
+
+      <ul>
+      <% @item.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+<div>
+
+  <div class="grid_8">
+    <%= form.label :client_id %>
+    <%= form.collection_select :client_id, Client.all, :id, :name, :prompt=>'select'%>
+    <br/>
+  </div>
+  <% # Invoice status %>
+  <div class="grid_8">
+    <%= form.label :status %>
+    <% @sts = ['pending', 'paid']%>
+    <%= form.select :status, @sts.collect{ |s| [t('.'+s), s] }, :prompt=>"select" %>
+  </div>
+
+  <div class="field" id='ar'>
+    <%= form.label :quantity %>
+    <%= form.text_field :quantity, :class => 'quantity-input' %>
+  </div>
+
+  <div class="field" id='ar2' >
+    <%= form.label :description %>
+    <%= form.text_field :description, :class => 'description-input' %>
+  </div>
+
+
+  <div class="field" id='ar3'>
+    <%= form.label :unit_cost %>
+    <%= form.text_field :unit_cost, :class => 'unit_cost-input'  %>
+  </div>
+
+
+  <div class="field" id='ar4'>
+    <%= form.label :discount %>
+    <%= form.text_field :discount, :class => 'discount-input' %>
+  </div>
+
+  <div class="field" id='ar5'>
+    <%= form.label :Collection  %>
+    <%= form.text_field :tax, :value=>0%>
+  </div>
+
+  <div class="field" id='five'>
+    <%= form.label :balance %>
+    <%= form.text_field :balance, :value=>0%>
+  </div>
+
+  <div class="field">
+  		<%= form.label :Total%>
+  	<span class="total-price">
+        <%= '%0.02f' % @item.total_price %>
+    </span>
+  </div>
+</div>
+
+<div class="field">
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+</div>
+<% end %>
+
+
+
+
+
+
+
+  <script>
+    
+    $(function(){
+      function get_new_index() {
+        if ($('table#items_table tbody tr:last td:first input').length == 0) {
+          return 0;
+        }
+        else {
+          return parseInt($('table#items_table tbody tr:last td:first input').attr('name').match(/\d+/)[0]) + 1;
+        }
+      }
+    
+      $('#add_item').click(function(){
+        $('#item_template').tmpl({index: get_new_index()}).appendTo('table#items_table tbody');
+        return false;
+      });
+    
+      $('.delete_item').live('click', function(){
+        var context = $(this).parent().parent()
+        if ($('input[name*=_destroy]', context).length == 0) {
+          context.remove(); // If its a new item then simply remove it from the dom
+        }
+        else {
+          context.hide();
+          $('input[name*=_destroy]', context).val('true'); // This will tell the server to delete the record
+        }
+      });
+    
+      // Update totals
+    
+      function update_price(elem) {
+        var context = $(elem).parent().parent()[0].tagName == 'TD' ? $(elem).parent().parent().parent() : $(elem).parent().parent();
+        var quantity = $('.quantity-input', context).val();
+        var unit_cost = $('.unit_cost-input', context).val();
+        var discount = $('.discount-input', context).val();
+        var balance = $('.balance-input', context).val();
+      
+        // Check they're numbers
+        quantity = isNaN(quantity) ? 0 : quantity;
+        unit_cost = isNaN(unit_cost) ? 0 : unit_cost;
+        discount = isNaN(discount) ? 0 : discount;
+        balance = isNaN(discount) ? 0 : balance;
+      
+        // Update
+        $('.total-price', context).html('$ ' + (quantity * unit_cost * (1 - (discount / 100.0))));
+        // $('.price', context).html('Rs ' + (balance -(unit_cost *(1 - (discount / 10.0))));
+      }
+    
+      $('.quantity-input').live('keyup', function(){ update_price(this); });
+      $('.unit_cost-input').live('keyup', function(){ update_price(this); });
+      $('.discount-input').live('keyup', function(){ update_price(this); });
+      $('.balance-input').live('keyup', function(){ update_price(this); });
+    });
+
+  </script>
+

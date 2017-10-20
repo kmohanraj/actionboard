@@ -1,0 +1,53 @@
+<h1>
+  <%= t('.list_clients') %>
+  <span class="right">
+    <%= link_to t('.new_client'), new_client_path %>
+  </span>
+</h1>
+<table>
+  <thead>
+    <tr>
+      <th width="150">
+        <%= t('.name') %>
+      </th>
+      <th width="200">
+        <%= t('.company_name') %>
+      </th>
+      <th width="200">
+        <%= t('.address') %>
+      </th>
+      <th width="200">
+        <%= t('action')%>
+      </th>
+    </tr>
+  </thead>
+  <!-- <tfoot>
+    <tr>
+      <td colspan="6">
+        <%#= @clients %>
+      </td>
+    </tr>
+  </tfoot> -->
+  <tbody>
+    <% @clients.each do |client| %>
+      <tr>
+        <td>
+          <%= client.name %>
+          <%# unless client.email.empty? %> 
+            <%#= mail_to client.email, t('.email')         %>
+          <%# end %>
+        </td>
+        <td>
+          <%= client.company %>
+        </td>
+        <td>
+          <%= client.address %>
+        </td>
+        <td>
+          <%= link_to t('.edit'), edit_client_path(client) %>
+          <%= link_to t('.destroy'), client, :confirm => t('.confirm_delete'), :method => :delete %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
