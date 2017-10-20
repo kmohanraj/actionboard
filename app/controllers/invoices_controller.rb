@@ -57,12 +57,6 @@ class InvoicesController < ApplicationController
     end
   end
 
-  def get_client
-      @invoice = Client.find_by_id(params[:id])
-      p "LLLLLLLLLLLLLLLLLLLL"
-      p @invoice
-       p "LLLLLLLLLLLLLLLLLLLL"
-    end
   private
     def set_invoice
       @invoice = Invoice.find(params[:id])
@@ -77,9 +71,6 @@ class InvoicesController < ApplicationController
 
     def get_client
       @invoice = Invoice.find_by_id(params[:id])
-      p "LLLLLLLLLLLLLLLLLLLL"
-      p @invoice
-       p "LLLLLLLLLLLLLLLLLLLL"
     end
 
 end

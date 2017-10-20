@@ -9,10 +9,7 @@ class ItemsController < ApplicationController
 
   def new
   	@item = Item.new
-  	@invoice = Invoice.find_by(id: params[:id])
-  	p 'iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii'
-  	p @invoice
-  	p '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+  	# @invoice = Invoice.find_by(id: params[:id])
   end
 
 
@@ -34,9 +31,6 @@ class ItemsController < ApplicationController
 
    def show
     @client = Client.find_by_id(params[:id])
-    p "@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
-    p @client
-    p "@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
     @item = Item.find(params[:id])
     respond_to do |format|
      format.html
@@ -101,9 +95,6 @@ class ItemsController < ApplicationController
     
     def get_client
     	@client = Client.find_by(params[:id])
-  	p '9999999999999999999999999999999'
-  	p @invoice
-  	p '9999999999999999999999999990999'
     end
 
 end

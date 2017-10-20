@@ -15,15 +15,15 @@ class Item < ActiveRecord::Base
   rescue NoMethodError => method
     0
   end
-  def total_amount
-    if grn.saved_in_old_tax_mode?
-      net_amount = gross_amount + tax_amount(gross_amount)
-      net_amount - discount_amount(net_amount) 
-    else
-      net_amount = gross_amount - discount_amount(gross_amount)
-      net_amount + tax_amount(net_amount)
-    end  
-  end
+  # def total_amount
+  #   if grn.saved_in_old_tax_mode?
+  #     net_amount = gross_amount + tax_amount(gross_amount)
+  #     net_amount - discount_amount(net_amount) 
+  #   else
+  #     net_amount = gross_amount - discount_amount(gross_amount)
+  #     net_amount + tax_amount(net_amount)
+  #   end  
+  # end
   def total_balance
       total -= total_price
   end
@@ -35,12 +35,10 @@ class Item < ActiveRecord::Base
   def balance_amount
     total_price * (balance * 0.01)
   end
-
-  def price
-    de = @item.total_price - tax
-  end
   
-  def tax_amount(amount)
-    return amount * ( tax * 0.01)
-  end
+  
+  # def tax_amount(amount)
+  #   return amount * ( tax * 0.01)
+  # end
+
 end

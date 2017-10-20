@@ -7,10 +7,10 @@ class Invoice < ActiveRecord::Base
     attr_accessor :nested
 
 
-    belongs_to :client #this is working for client name in invoices index page
-   belongs_to :items
-   has_many :items, :dependent => :destroy
-   accepts_nested_attributes_for :items, :allow_destroy => true
+  belongs_to :client #this is working for client name in invoices index page
+  belongs_to :items
+  has_many :items, :dependent => :destroy
+  accepts_nested_attributes_for :items, :allow_destroy => true
   
   
   def at_least_one_item
@@ -31,13 +31,4 @@ class Invoice < ActiveRecord::Base
   end
 
   
-  private
-
-    def get_client
-      client = Client.find(params[:id])
-
-      p ">>>>>>>>>>>>>>>>>>>>>"
-      p client
-      p ">>>>>>>>>>>>>>>>>>>>>"
-    end
 end

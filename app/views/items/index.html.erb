@@ -9,6 +9,7 @@
 <h1>
   <%= t('.list_invoices') %>
   <span class="right">
+
     <%#= link_to t('Show Pending Bill'), :url=>{:controller=>"items", :action=>"bending_bill"} %>
   </span>
   <span class="right">
@@ -61,14 +62,15 @@
           <%#= l(invoice.created_at, :format => :short) %>
           <%= link_to h(invoice.created_at.strftime("%B %d, %Y %H:%M")), invoice%>
         </td>
+        <% client = Client.find_by(id: invoice.client_id)%>
+          <% p"MMMMMMMMMMMMMMMMMMMMMMMM"%>
+          <% p client.name%>
+          <% p"MMMMMMMMMMMMMMMMMMMMMMMM"%>
         <td>
-          <%= @client.name %>
-          <% p"MMMMMMMMMMMMMMMMMMMMMMMM"%>
-          <% p @client.name%>
-          <% p"MMMMMMMMMMMMMMMMMMMMMMMM"%>
-          <%# unless invoice.client.email.empty? %>
-          
-            <%#= mail_to invoice.client.email, 'Email' %>
+          <%= client.name %>
+          <%# unless client.email.empty? %>
+        
+            <%#= mail_to client.email, 'Email' %>
           <%# end %>
         </td>
         <td class="invoice-status invoice-status-<%= invoice.status %>">

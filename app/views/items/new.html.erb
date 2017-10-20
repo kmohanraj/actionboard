@@ -66,13 +66,13 @@
     <%= form.collection_select :client_id, Client.all, :id, :name, :prompt=>'select'%>
     <br/>
   </div>
-  <% # Invoice status %>
+  <br>
   <div class="grid_8">
     <%= form.label :status %>
     <% @sts = ['pending', 'paid']%>
     <%= form.select :status, @sts.collect{ |s| [t('.'+s), s] }, :prompt=>"select" %>
   </div>
-
+  <br><br>
   <div class="field" id='ar'>
     <%= form.label :quantity %>
     <%= form.text_field :quantity, :class => 'quantity-input' %>
