@@ -3,6 +3,6 @@ class Client < ApplicationRecord
    validates :email, :presence => true
    validates :company,:presence => true
   # belongs_to :company
-    # has_many :items
-   belongs_to :items
+   has_many :items
+#    belongs_to :items
 end
